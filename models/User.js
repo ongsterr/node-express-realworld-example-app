@@ -52,7 +52,7 @@ UserSchema.methods.generateJWT = function () {
   }, secret);
 };
 
-UserSchema.method.toAuthJSON = function () {
+UserSchema.methods.toAuthJSON = function () {
   return {
     username: this.username,
     email: this.email,

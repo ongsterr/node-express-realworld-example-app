@@ -35,7 +35,7 @@ router.post('/users/login', (req, res, next) => {
   }
 
   passport.authenticate('local', {session: false}, (error, user, info) => {
-    if (err) { return next(err) };
+    if (error) { return next(error) };
 
     if (user) {
       user.token = user.generateJWT();
@@ -60,31 +60,32 @@ router.get('/user', auth.required, (req, res, next) => {
 })
 
 router.put('/user', auth.required, (req, res, next) => {
+  console.log(req.payload)
   User.findById(req.payload.id)
     .then(user => {
       if (!user) { return res.status(401)};
-    })
-  
-  // Only update fields that were actually passed...
-  if (typeof req.body.user.username !== undefined) {
-    user.username = req.body.user.username;
-  }
-  if (typeof req.body.user.email !== undefined) {
-    user.email = req.body.user.email;
-  }
-  if (typeof req.body.user.bio !== undefined) {
-    user.bio = req.body.user.bio;
-  }
-  if (typeof req.body.user.image !== undefined) {
-    user.image = req.body.user.image;
-  }
-  if (typeof req.body.user.password !== undefined) {
-    user.password = req.body.user.password;
-  }
 
-  return user.save()
-    .then(() => {
-      return res.json({ user: user.toAuthJSON() })
+      // Only update fields that were actually passed...
+      if (typeof req.body.user.username !== undefined) {
+        user.username = req.body.user.username;
+      }
+      if (typeof req.body.user.email !== undefined) {
+        user.email = req.body.user.email;
+      }
+      if (typeof req.body.user.bio !== undefined) {
+        user.bio = req.body.user.bio;
+      }
+      if (typeof req.body.user.image !== undefined) {
+        user.image = req.body.user.image;
+      }
+      if (typeof req.body.user.password !== undefined) {
+        user.password = req.body.user.password;
+      }
+
+      return user.save()
+        .then(() => {
+          return res.json({ user: user.toAuthJSON() })
+        })
     })
     .catch(next);
 })

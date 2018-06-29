@@ -1,3 +1,4 @@
+### Register user
 POST http://localhost:3000/api/users
 Content-Type: application/json
 
@@ -6,5 +7,43 @@ Content-Type: application/json
     "username": "test",
     "email": "user@example.com",
     "password": "12345" 
+  }
+}
+
+### Good login
+POST http://localhost:3000/api/users/login
+Content-Type: application/json
+
+{
+  "user": {
+    "email": "user@example.com",
+    "password": "12345"
+  }
+}
+
+### Bad Login
+POST http://localhost:3000/api/users/login
+Content-Type: application/json
+
+{
+  "user": {
+    "email": "user@example.com",
+    "password": "123456"
+  }
+}
+
+### Get user
+GET http://localhost:3000/api/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzRjN2QyYmFjZWVmYzk0ZDViMDU0MiIsInVzZXJuYW1lIjoidGVzdCIsImV4cCI6MTUzNTQyMDgxOSwiaWF0IjoxNTMwMjM2ODE5fQ.2rue3IuGA48GtjfTSP-0f3GcmmrXK-_tAChGCSZU_Vg
+
+### Updating user details
+PUT http://localhost:3000/api/user
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzRjN2QyYmFjZWVmYzk0ZDViMDU0MiIsInVzZXJuYW1lIjoidGVzdCIsImV4cCI6MTUzNTQyMDgxOSwiaWF0IjoxNTMwMjM2ODE5fQ.2rue3IuGA48GtjfTSP-0f3GcmmrXK-_tAChGCSZU_Vg
+
+{
+  "user": {
+    "email": "foobar@example.com",
+    "username": "foobar"
   }
 }
