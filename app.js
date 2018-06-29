@@ -37,10 +37,13 @@ if (!isProduction) {
   app.use(errorhandler());
 }
 
+// Connect to db first before starting server
 if(isProduction){
   mongoose.connect(process.env.MONGODB_URI);
 } else {
-  mongoose.connect('mongodb://localhost/conduit');
+  mongoose.connect('mongodb://localhost/conduit')
+    .then(() => console.log('Mongodb connection established :)'))
+    .catch(err => console.error(`Mongodb failure: ${err.message}`));
   mongoose.set('debug', true);
 }
 

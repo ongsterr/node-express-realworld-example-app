@@ -3,7 +3,7 @@ const mongoose = require('mongoose'),
       crypto = require('crypto'),
       jwt = require('jsonwebtoken'),
       secret = require('../config').secret,
-      Schema = mongoose.Schema;
+      {Schema} = mongoose;
 
 const UserSchema = new Schema({
   username: {
@@ -59,6 +59,15 @@ UserSchema.methods.toAuthJSON = function () {
     token: this.generateJWT(),
     bio: this.bio,
     image: this.image,
+  };
+};
+
+UserSchema.methods.toProfileJSONFor = function (user) {
+  return {
+    username: this.username,
+    bio: this.bio,
+    image: this.image || 'https://static.productionready.io/images/smiley-cyrus.jpg',
+    following: false
   };
 };
 

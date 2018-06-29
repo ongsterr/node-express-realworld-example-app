@@ -47,3 +47,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzRjN2QyY
     "username": "foobar"
   }
 }
+
+### Get profile
+GET http://localhost:3000/api/profiles/foobar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzRjN2QyYmFjZWVmYzk0ZDViMDU0MiIsInVzZXJuYW1lIjoidGVzdCIsImV4cCI6MTUzNTQyMDgxOSwiaWF0IjoxNTMwMjM2ODE5fQ.2rue3IuGA48GtjfTSP-0f3GcmmrXK-_tAChGCSZU_Vg
