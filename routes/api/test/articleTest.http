@@ -1,0 +1,21 @@
+### Post articles
+POST http://localhost:3000/api/articles
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzViNmNkZjhlZjBiMjUzYWI1N2Q5MyIsInVzZXJuYW1lIjoidGVzdCIsImV4cCI6MTUzNTQ1Nzg2MCwiaWF0IjoxNTMwMjczODYwfQ.ZVoVL4xvTCHq92MGybdxfKOQ0iPaimJwkvX97NTosxA
+
+{
+  "article": {
+    "title": "The Concept of Rails",
+    "description": "A comprehensive guide to using Rails to build servers",
+    "body": "A comprehensive guide to using Rails to build servers",
+    "tagList": ["rails"],
+    "favoritesCount": 1
+  }
+}
+
+### Retrieve article
+GET http://localhost:3000/api/articles/the-concept-of-node-413z79
+
+### Delete article
+DELETE http://localhost:3000/api/articles/the-concept-of-rails-moxcoz
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzViNmNkZjhlZjBiMjUzYWI1N2Q5MyIsInVzZXJuYW1lIjoidGVzdCIsImV4cCI6MTUzNTQ1Nzg2MCwiaWF0IjoxNTMwMjczODYwfQ.ZVoVL4xvTCHq92MGybdxfKOQ0iPaimJwkvX97NTosxA

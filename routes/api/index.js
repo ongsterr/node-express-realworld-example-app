@@ -1,9 +1,11 @@
 const router = require('express').Router();
 const userRouter = require('./users');
 const profileRouter = require('./profiles');
+const articleRouter = require('./articles');
 
 router.use('/', userRouter);
 router.use('/profiles', profileRouter);
+router.use('/articles', articleRouter);
 
 router.use((err, req, res, next) => {
   console.log(err);

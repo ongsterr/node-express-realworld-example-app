@@ -28,6 +28,7 @@ app.use(session({ secret: 'conduit', cookie: { maxAge: 60000 }, resave: false, s
 
 const passportConfig = require('./config/passport');
 const userModel = require('./models/User');
+const articleModel = require('./models/Article');
 
 // Routes
 const router = require('./routes/index')
