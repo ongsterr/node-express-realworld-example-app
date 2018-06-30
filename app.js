@@ -29,9 +29,10 @@ app.use(session({ secret: 'conduit', cookie: { maxAge: 60000 }, resave: false, s
 const passportConfig = require('./config/passport');
 const userModel = require('./models/User');
 const articleModel = require('./models/Article');
+const commentModel = require('./models/Comment');
 
 // Routes
-const router = require('./routes/index')
+const router = require('./routes')
 app.use('/', router);
 
 if (!isProduction) {

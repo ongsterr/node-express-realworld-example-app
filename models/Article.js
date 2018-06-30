@@ -21,7 +21,11 @@ const ArticleSchema = new Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
-  }
+  },
+  comments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Comment',
+  }]
 }, {
   timestamps: true,
   usePushEach: true,

@@ -1,0 +1,18 @@
+### Post comment
+POST http://localhost:3000/api/articles/the-concept-of-rails-3pxp24/comments
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzRjN2QyYmFjZWVmYzk0ZDViMDU0MiIsInVzZXJuYW1lIjoiZm9vYmFyIiwiZXhwIjoxNTM1NTQwNTI0LCJpYXQiOjE1MzAzNTY1MjR9.rrhag756639wSPCKDPqB2h5-PZh4sekXSLaYyuHD6nQ
+
+{
+  "comment": {
+    "body": "This is my first comment."
+  }
+}
+
+### Retrieve comments
+GET http://localhost:3000/api/articles/the-concept-of-rails-3pxp24/comments
+
+### Delete comment
+DELETE http://localhost:3000/api/articles/the-concept-of-rails-3pxp24/comments/5b37653f704c921f4388bba7
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzRjN2QyYmFjZWVmYzk0ZDViMDU0MiIsInVzZXJuYW1lIjoiZm9vYmFyIiwiZXhwIjoxNTM1NTQwNTI0LCJpYXQiOjE1MzAzNTY1MjR9.rrhag756639wSPCKDPqB2h5-PZh4sekXSLaYyuHD6nQ

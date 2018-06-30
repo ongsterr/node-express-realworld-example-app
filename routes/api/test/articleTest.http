@@ -5,10 +5,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzViNmNkZ
 
 {
   "article": {
-    "title": "The Concept of Rails",
-    "description": "A comprehensive guide to using Rails to build servers",
-    "body": "A comprehensive guide to using Rails to build servers",
-    "tagList": ["rails"],
+    "title": "The Concept of CSS",
+    "description": "A comprehensive guide to using CSS to build servers",
+    "body": "A comprehensive guide to using CSS to build servers",
+    "tagList": ["CSS"],
     "favoritesCount": 1
   }
 }
