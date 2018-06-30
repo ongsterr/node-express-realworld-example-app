@@ -13,8 +13,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzViNmNkZ
   }
 }
 
+### Retrieve articles
+GET http://localhost:3000/api/articles
+
 ### Retrieve article
-GET http://localhost:3000/api/articles/the-concept-of-node-413z79
+GET http://localhost:3000/api/articles/the-concept-of-rails-3pxp24
 
 ### Delete article
 DELETE http://localhost:3000/api/articles/the-concept-of-rails-moxcoz

@@ -38,22 +38,36 @@ router.param('article', (req, res, next, slug) => {
       return next();
     })
     .catch(next);
-})
+});
 
 router.get('/:article', auth.optional, (req, res, next) => {
-  const query = {};
-  const limit = 20;
-  const offset = 0;
+  Promise.all([
+    req.payload ? User.findById(req.payload.id) : null,
+    req.article.populate('author').execPopulate()
+  ])
+    .then(results => {
+      const user = results[0];
+      return res.json({
+        article: req.article.toJSONFor(user)
+      });
+    })
+    .catch(next)
+});
 
-  if (typeof req.query.limit !== undefined) {
+router.get('/', auth.optional, (req, res, next) => {
+  let query = {};
+  let limit = 20;
+  let offset = 0;
+
+  if (typeof req.query.limit !== 'undefined') {
     limit = req.query.limit;
   };
 
-  if (typeof req.query.offset !== undefined) {
+  if (typeof req.query.offset !== 'undefined') {
     offset = req.query.offset;
   };
 
-  if (typeof req.query.tag !== undefined) {
+  if (typeof req.query.tag !== 'undefined') {
     query.tagList = {$in: [req.query.tag]};
   };
 
@@ -103,15 +117,15 @@ router.put('/:article', auth.required, (req, res, next) => {
   User.findById(req.payload.id)
     .then(user => {
       if (req.article.author._id.toString() === req.payload.id.toString()) {
-        if (typeof req.body.article.title !== undefined) {
+        if (typeof req.body.article.title !== 'undefined') {
           req.article.title = req.body.article.title;
         }
 
-        if (typeof req.body.article.description !== undefined) {
+        if (typeof req.body.article.description !== 'undefined') {
           req.article.description = req.body.article.description;
         }
 
-        if (typeof req.body.article.body !== undefined) {
+        if (typeof req.body.article.body !== 'undefined') {
           req.article.body = req.body.article.body;
         }
 
@@ -261,11 +275,11 @@ router.get('/feed', auth.required, (req, res, next) => {
   const limit = 20;
   const offset = 0;
 
-  if (typeof req.query.limit !== undefined) {
+  if (typeof req.query.limit !== 'undefined') {
     limit = req.query.limit;
   };
 
-  if (typeof req.query.offset !== undefined) {
+  if (typeof req.query.offset !== 'undefined') {
     offset = req.query.offset;
   };
 
