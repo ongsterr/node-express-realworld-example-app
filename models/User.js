@@ -26,7 +26,14 @@ const UserSchema = new Schema({
   image: String,
   hash: String,
   salt: String,
-}, {timestamps: true});
+  favorites: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Article'
+  }],
+}, {
+  timestamps: true,
+  usePushEach: true,
+});
 
 UserSchema.plugin(uniqueValidator, {message: "is already taken"});
 
@@ -69,6 +76,24 @@ UserSchema.methods.toProfileJSONFor = function (user) {
     image: this.image || 'https://static.productionready.io/images/smiley-cyrus.jpg',
     following: false
   };
+};
+
+UserSchema.methods.favorite = function (id) {
+  if (this.favorites.indexOf(id) === -1) {
+    this.favorites = this.favorites.concat([id]);
+  }
+  return this.save();
+}
+
+UserSchema.methods.unfavorite = function (id) {
+  this.favorites.remove(id); // document.remove() seems to be different from model.remove(). Clarify more.
+  return this.save();
+}
+
+UserSchema.methods.isFavorite = function (id) {
+  return this.favorites.some(favoriteId => { // The some() method tests whether at least one element in the array passes the test implemented by the provided function.
+    return favoriteId.toString() === id.toString();
+  });
 };
 
 const userModel = mongoose.model('User', UserSchema);

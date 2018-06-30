@@ -19,3 +19,14 @@ GET http://localhost:3000/api/articles/the-concept-of-node-413z79
 ### Delete article
 DELETE http://localhost:3000/api/articles/the-concept-of-rails-moxcoz
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzViNmNkZjhlZjBiMjUzYWI1N2Q5MyIsInVzZXJuYW1lIjoidGVzdCIsImV4cCI6MTUzNTQ1Nzg2MCwiaWF0IjoxNTMwMjczODYwfQ.ZVoVL4xvTCHq92MGybdxfKOQ0iPaimJwkvX97NTosxA
+
+### Favorite article
+POST http://localhost:3000/api/articles/the-concept-of-rails-4m1yxf/favorite
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzViNmNkZjhlZjBiMjUzYWI1N2Q5MyIsInVzZXJuYW1lIjoidGVzdCIsImV4cCI6MTUzNTQ1Nzg2MCwiaWF0IjoxNTMwMjczODYwfQ.ZVoVL4xvTCHq92MGybdxfKOQ0iPaimJwkvX97NTosxA
+###
+POST http://localhost:3000/api/articles/the-concept-of-rails-4m1yxf/favorite
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzRjN2QyYmFjZWVmYzk0ZDViMDU0MiIsInVzZXJuYW1lIjoiZm9vYmFyIiwiZXhwIjoxNTM1NTE4NzMxLCJpYXQiOjE1MzAzMzQ3MzF9.IHdlrmWtlSGFap4u1k8w--9-Vp63F3jLP3r8vqx40Ng
+
+### Unfavorite article
+DELETE http://localhost:3000/api/articles/the-concept-of-rails-4m1yxf/favorite
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzRjN2QyYmFjZWVmYzk0ZDViMDU0MiIsInVzZXJuYW1lIjoiZm9vYmFyIiwiZXhwIjoxNTM1NTE4NzMxLCJpYXQiOjE1MzAzMzQ3MzF9.IHdlrmWtlSGFap4u1k8w--9-Vp63F3jLP3r8vqx40Ng
