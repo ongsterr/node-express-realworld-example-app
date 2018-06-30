@@ -41,18 +41,63 @@ router.param('article', (req, res, next, slug) => {
 })
 
 router.get('/:article', auth.optional, (req, res, next) => {
+  const query = {};
+  const limit = 20;
+  const offset = 0;
+
+  if (typeof req.query.limit !== undefined) {
+    limit = req.query.limit;
+  };
+
+  if (typeof req.query.offset !== undefined) {
+    offset = req.query.offset;
+  };
+
+  if (typeof req.query.tag !== undefined) {
+    query.tagList = {$in: [req.query.tag]};
+  };
+
   Promise.all([
-    req.payload ? User.findById(req.payload.id) : null,
-    req.article.populate('author').execPopulate()
-  ])
-    .then(results => {
-      const user = results[0];
-      return res.json({
-        article: req.article.toJSONFor(user)
+    req.query.author ? User.findOne({username: req.query.author}) : null,
+    req.query.favorited ? User.findOne({username: req.query.favorited}) : null
+  ]).then(results => {
+    const author = results[0];
+    const favoriter = results[1];
+
+    if (author) {
+      query.author = author._id;
+    };
+
+    if (favoriter) {
+      query._id = {$in: favoriter.favorites}; // Do we have a query parameter for _id? Or it exist by default?
+    } else if (req.query.favorited) {
+      query._id = {$in: []};
+    };
+
+    return Promise.all([
+      Article.find(query)
+        .limit(Number(limit))
+        .skip(Number(offset))
+        .sort({createdAt: 'desc'})
+        .populate('author')
+        .exec(),
+      Article.count(query).exec(),
+      req.payload ? User.findById(req.payload.id) : null
+    ])
+      .then(results => {
+        const articles = results[0];
+        const articlesCount = results[1];
+        const user = results[2];
+        return res.json({
+          articles: articles.map(article => {
+            return article.toJSONFor(user);
+          }),
+          articlesCount
+        });
       });
-    })
-    .catch(next)
-})
+  })
+  .catch(next);
+});
 
 router.put('/:article', auth.required, (req, res, next) => {
   User.findById(req.payload.id)
@@ -210,6 +255,49 @@ router.delete('/:article/comments/:comment', auth.required, (req, res, next) => 
   } else {
     res.sendStatus(403);
   };
+});
+
+router.get('/feed', auth.required, (req, res, next) => {
+  const limit = 20;
+  const offset = 0;
+
+  if (typeof req.query.limit !== undefined) {
+    limit = req.query.limit;
+  };
+
+  if (typeof req.query.offset !== undefined) {
+    offset = req.query.offset;
+  };
+
+  User.findById(req.payload.id).then(user => {
+    if (!user) {
+      return res.sendStatus(401);
+    };
+
+    Promise.all([
+      Article.find({
+        author: {$in: user.following}
+      })
+        .limit(Number(limit))
+        .skip(Number(offset))
+        .populate('author')
+        .exec(),
+      Article.count({
+        author: {$in: user.following}
+      })
+    ]).then(results => {
+      const articles = results[0];
+      const articlesCount = results[1];
+
+      return res.json({
+        articles: articles.map(article => {
+          return article.toJSONFor(user);
+        }),
+        articlesCount
+      });
+    })
+    .catch(next);
+  });
 });
 
 module.exports = router;
