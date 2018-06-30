@@ -1,0 +1,20 @@
+### Post articles
+POST http://localhost:3000/api/articles
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzViNmNkZjhlZjBiMjUzYWI1N2Q5MyIsInVzZXJuYW1lIjoidGVzdCIsImV4cCI6MTUzNTQ1Nzg2MCwiaWF0IjoxNTMwMjczODYwfQ.ZVoVL4xvTCHq92MGybdxfKOQ0iPaimJwkvX97NTosxA
+
+{
+  "article": {
+    "title": "The Concept of Graphics",
+    "description": "A comprehensive guide to graphical design",
+    "body": "A comprehensive guide to graphical design",
+    "tagList": ["graphics", "design", "web"],
+    "favoritesCount": 1
+  }
+}
+
+### Get artile
+GET http://localhost:3000/api/articles/the-concept-of-graphics-i7w6fu
+
+### Fetch all tags
+GET http://localhost:3000/api/tags
