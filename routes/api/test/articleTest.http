@@ -14,11 +14,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzViNmNkZ
 }
 
 ### Retrieve articles
-GET http://localhost:3000/api/articles
+GET http://localhost:3000/api/articles?limit=10
 
 ### Retrieve feed
 GET http://localhost:3000/api/articles/feed
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzRjN2QyYmFjZWVmYzk0ZDViMDU0MiIsInVzZXJuYW1lIjoiZm9vYmFyIiwiZXhwIjoxNTM2MDM2Mzg1LCJpYXQiOjE1MzA4NTIzODV9.VMsRxUQ6Gr2zHjGqIzxvtwBPqLLThX1BPv9QgP2Vmt0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViMzViNmNkZjhlZjBiMjUzYWI1N2Q5MyIsInVzZXJuYW1lIjoidGVzdCIsImV4cCI6MTUzNjE0ODE3MCwiaWF0IjoxNTMwOTY0MTcwfQ.nd1cZeCuJrfjaGkmmWU_YV3blrHN6mDj20Q1vEWTs3o
 
 ### Retrieve article
 GET http://localhost:3000/api/articles/the-concept-of-rails-3pxp24

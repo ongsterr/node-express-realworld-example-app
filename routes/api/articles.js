@@ -7,26 +7,7 @@ const User = mongoose.model('User');
 const Comment = mongoose.model('Comment');
 const auth = require('../auth');
 
-router.post('/', auth.required, (req, res, next) => {
-  User.findById(req.payload.id).then(user => {
-    console.log(req.payload)
-    if (!user) {
-      res.sendStatus(401);
-    }
-  
-    const article = new Article(req.body.article);
-    article.author = user;
-    
-    return article.save().then(() => {
-      // console.log(article.author);
-      return res.json({
-        article: article.toJSONFor(user)
-      });
-    })
-  })
-  .catch(next)
-})
-
+// Preload article objects on routes with ':article'
 router.param('article', (req, res, next, slug) => {
   Article.findOne({slug})
     .populate('author')
@@ -40,18 +21,16 @@ router.param('article', (req, res, next, slug) => {
     .catch(next);
 });
 
-router.get('/:article', auth.optional, (req, res, next) => {
-  Promise.all([
-    req.payload ? User.findById(req.payload.id) : null,
-    req.article.populate('author').execPopulate()
-  ])
-    .then(results => {
-      const user = results[0];
-      return res.json({
-        article: req.article.toJSONFor(user)
-      });
-    })
-    .catch(next)
+router.param('comment', (req, res, next, id) => {
+  Comment.findById(id).then(comment => {
+    if (!comment) {
+      return res.sendStatus(401);
+    }
+
+    req.comment = comment;
+    return next();
+  })
+  .catch(next);
 });
 
 router.get('/', auth.optional, (req, res, next) => {
@@ -112,6 +91,83 @@ router.get('/', auth.optional, (req, res, next) => {
   })
   .catch(next);
 });
+
+router.get('/feed', auth.required, (req, res, next) => {
+  let limit = 20;
+  let offset = 0;
+
+  if (typeof req.query.limit !== 'undefined') {
+    limit = req.query.limit;
+  };
+
+  if (typeof req.query.offset !== 'undefined') {
+    offset = req.query.offset;
+  };
+
+  User.findById(req.payload.id).then(user => {
+    if (!user) {
+      return res.sendStatus(401);
+    };
+
+    Promise.all([
+      Article.find({
+        author: {$in: user.following}
+      })
+        .limit(Number(limit))
+        .skip(Number(offset))
+        .populate('author')
+        .exec(),
+      Article.count({
+        author: {$in: user.following}
+      })
+    ]).then(results => {
+      const articles = results[0];
+      const articlesCount = results[1];
+      console.log(articles)
+      return res.json({
+        articles: articles.map(article => {
+          return article.toJSONFor(user);
+        }),
+        articlesCount
+      });
+    })
+    .catch(next);
+  });
+});
+
+router.get('/:article', auth.optional, (req, res, next) => {
+  Promise.all([
+    req.payload ? User.findById(req.payload.id) : null,
+    req.article.populate('author').execPopulate()
+  ])
+    .then(results => {
+      const user = results[0];
+      return res.json({
+        article: req.article.toJSONFor(user)
+      });
+    })
+    .catch(next)
+});
+
+router.post('/', auth.required, (req, res, next) => {
+  User.findById(req.payload.id).then(user => {
+    console.log(req.payload)
+    if (!user) {
+      res.sendStatus(401);
+    }
+  
+    const article = new Article(req.body.article);
+    article.author = user;
+    
+    return article.save().then(() => {
+      // console.log(article.author);
+      return res.json({
+        article: article.toJSONFor(user)
+      });
+    })
+  })
+  .catch(next)
+})
 
 router.put('/:article', auth.required, (req, res, next) => {
   User.findById(req.payload.id)
@@ -241,18 +297,6 @@ router.get('/:article/comments', auth.optional, (req, res, next) => {
   .catch(next);
 });
 
-router.param('comment', (req, res, next, id) => {
-  Comment.findById(id).then(comment => {
-    if (!comment) {
-      return res.sendStatus(401);
-    }
-
-    req.comment = comment;
-    return next();
-  })
-  .catch(next);
-});
-
 /*
 When you work with relational data in Mongoose, you'll often need to delete not only the primary data itself (a comment, for example) but also any references to that data (i.e. a comment ID).
 */
@@ -269,49 +313,6 @@ router.delete('/:article/comments/:comment', auth.required, (req, res, next) => 
   } else {
     res.sendStatus(403);
   };
-});
-
-router.get('/feed', auth.required, (req, res, next) => {
-  const limit = 20;
-  const offset = 0;
-
-  if (typeof req.query.limit !== 'undefined') {
-    limit = req.query.limit;
-  };
-
-  if (typeof req.query.offset !== 'undefined') {
-    offset = req.query.offset;
-  };
-
-  User.findById(req.payload.id).then(user => {
-    if (!user) {
-      return res.sendStatus(401);
-    };
-
-    Promise.all([
-      Article.find({
-        author: {$in: user.following}
-      })
-        .limit(Number(limit))
-        .skip(Number(offset))
-        .populate('author')
-        .exec(),
-      Article.count({
-        author: {$in: user.following}
-      })
-    ]).then(results => {
-      const articles = results[0];
-      const articlesCount = results[1];
-
-      return res.json({
-        articles: articles.map(article => {
-          return article.toJSONFor(user);
-        }),
-        articlesCount
-      });
-    })
-    .catch(next);
-  });
 });
 
 module.exports = router;

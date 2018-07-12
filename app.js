@@ -10,6 +10,9 @@ const fs = require('fs'),
       errorhandler = require('errorhandler'),
       mongoose = require('mongoose');
 
+const morgan = require('morgan');
+const logger = require('./logger');
+
 const isProduction = process.env.NODE_ENV === 'production';
 
 // Create global app object
@@ -30,6 +33,23 @@ const passportConfig = require('./config/passport');
 const userModel = require('./models/User');
 const articleModel = require('./models/Article');
 const commentModel = require('./models/Comment');
+
+// logger
+app.use(morgan('combined', {
+  skip: (req, res) => {
+    return res.statusCode < 400
+  },
+  stream: process.stderr
+}));
+
+app.use(morgan('combined', {
+  skip: (req, res) => {
+    return res.statusCode >= 400
+  },
+  stream: process.stdout
+}))
+
+app.use(logger);
 
 // Routes
 const router = require('./routes')
